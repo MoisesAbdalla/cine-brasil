@@ -74,11 +74,10 @@ export function normalizarDetalhe(bruto: FilmeDetalheTmdb): FilmeDetalhe {
       foto: urlImagem(p.profile_path, 'w185'),
     })),
     trailerYoutube: trailer?.key ?? null,
-    provedores: provedoresBr.map((p) => ({
-      id: p.provider_id,
-      nome: p.provider_name,
-      logo: urlImagem(p.logo_path, 'w92') as string,
-    })),
+    provedores: provedoresBr.flatMap((p) => {
+      const logo = urlImagem(p.logo_path, 'w92');
+      return logo ? [{ id: p.provider_id, nome: p.provider_name, logo }] : [];
+    }),
     parecidos: (bruto.similar?.results ?? []).slice(0, MAXIMO_PARECIDOS).map(normalizarResumo),
   };
 }

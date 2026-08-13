@@ -95,6 +95,35 @@ describe('normalizarDetalhe', () => {
     expect(normalizarDetalhe(semBr).provedores).toEqual([]);
   });
 
+  it('descarta provedores sem logo e mantém os com logo válido', () => {
+    const misto = {
+      ...detalheBase,
+      'watch/providers': {
+        results: {
+          BR: {
+            flatrate: [
+              { provider_id: 8, provider_name: 'Netflix', logo_path: '/n.jpg', display_priority: 1 },
+              { provider_id: 10, provider_name: 'Sem Logo', logo_path: '', display_priority: 2 },
+              { provider_id: 11, provider_name: 'Outro', logo_path: '/outro.jpg', display_priority: 3 },
+            ],
+          },
+        },
+      },
+    };
+    const d = normalizarDetalhe(misto);
+    expect(d.provedores).toHaveLength(2);
+    expect(d.provedores[0]).toEqual({
+      id: 8,
+      nome: 'Netflix',
+      logo: 'https://image.tmdb.org/t/p/w92/n.jpg',
+    });
+    expect(d.provedores[1]).toEqual({
+      id: 11,
+      nome: 'Outro',
+      logo: 'https://image.tmdb.org/t/p/w92/outro.jpg',
+    });
+  });
+
   it('só aceita trailer do YouTube', () => {
     expect(normalizarDetalhe(detalheBase).trailerYoutube).toBe('xyz');
 
