@@ -25,10 +25,12 @@ O token é o *API Read Access Token* (v4) do TMDB, obtido em
 
 ## Como funciona
 
-Componentes de servidor consultam o TMDB antes de o HTML sair; o navegador não faz
-requisições de dados — o único JavaScript de cliente é o botão que carrega o trailer
-sob demanda. Todo o estado de filtro vive na URL, então cada tela tem endereço
-próprio, compartilhável e indexável.
+Componentes de servidor consultam o TMDB antes de o HTML sair; o navegador nunca
+busca dados de filme diretamente. O JavaScript de cliente existe só para
+interações locais — o botão que carrega o trailer sob demanda e a tela de erro
+com o botão "Tentar de novo" —, nenhum dos dois faz requisição ao TMDB. Todo o
+estado de filtro vive na URL, então cada tela tem endereço próprio,
+compartilhável e indexável.
 
 A camada `src/lib/tmdb` isola o formato da API; nenhum componente conhece os nomes
 de campo do TMDB. A lógica pura (`src/lib/filtros`) é o que recebe testes de unidade.
