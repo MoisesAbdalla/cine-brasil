@@ -28,7 +28,7 @@ export function montarParametrosDescoberta(
 
   const parametros: Record<string, string> = {
     watch_region: 'BR',
-    with_watch_monetization_types: 'flatrate',
+    with_watch_monetization_types: filtros.incluirGratis ? 'flatrate|free|ads' : 'flatrate',
     // Sem isto, "nota acima de 8" devolve filmes com três votos e média 10.
     // Não é configurável na interface, e não deve deixar de existir.
     'vote_count.gte': '50',

@@ -98,3 +98,26 @@ describe('comFiltros', () => {
     expect(comFiltros({ ...FILTROS_PADRAO, notaMinima: 7 })).toBe('/?nota=7');
   });
 });
+
+describe('incluirGratis', () => {
+  it('vem desligado por padrão', () => {
+    expect(lerFiltros({}).incluirGratis).toBe(false);
+  });
+
+  it('liga com gratis=1 e ignora qualquer outro valor', () => {
+    expect(lerFiltros({ gratis: '1' }).incluirGratis).toBe(true);
+    expect(lerFiltros({ gratis: 'sim' }).incluirGratis).toBe(false);
+    expect(lerFiltros({ gratis: '0' }).incluirGratis).toBe(false);
+  });
+
+  it('só aparece na query string quando está ligado', () => {
+    expect(paraQueryString(FILTROS_PADRAO)).not.toContain('gratis');
+    expect(paraQueryString({ ...FILTROS_PADRAO, incluirGratis: true })).toContain('gratis=1');
+  });
+
+  it('sobrevive à ida e volta', () => {
+    const original = lerFiltros({ gratis: '1', genero: '27' });
+    const params = Object.fromEntries(new URLSearchParams(paraQueryString(original)));
+    expect(lerFiltros(params)).toEqual(original);
+  });
+});

@@ -81,3 +81,21 @@ describe('montarParametrosDescoberta', () => {
     expect(p.page).toBe('3');
   });
 });
+
+describe('tipos de monetização', () => {
+  it('pede só assinatura por padrão', () => {
+    const p = montarParametrosDescoberta(FILTROS_PADRAO, SERVICOS_PADRAO);
+    expect(p.with_watch_monetization_types).toBe('flatrate');
+  });
+
+  it('inclui grátis e com anúncio quando o filtro está ligado', () => {
+    const p = montarParametrosDescoberta({ ...FILTROS_PADRAO, incluirGratis: true }, SERVICOS_PADRAO);
+    expect(p.with_watch_monetization_types).toBe('flatrate|free|ads');
+  });
+
+  it('mantém o mínimo de votos e a região mesmo com grátis ligado', () => {
+    const p = montarParametrosDescoberta({ ...FILTROS_PADRAO, incluirGratis: true }, SERVICOS_PADRAO);
+    expect(p['vote_count.gte']).toBe('50');
+    expect(p.watch_region).toBe('BR');
+  });
+});

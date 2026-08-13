@@ -14,6 +14,9 @@ export function Cabecalho() {
           <Link href="/busca" className="etiqueta hover:text-texto">
             Buscar
           </Link>
+          <Link href="/quero-ver" className="etiqueta hover:text-texto">
+            Minha lista
+          </Link>
         </nav>
       </div>
     </header>

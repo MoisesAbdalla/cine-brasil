@@ -55,6 +55,6 @@ export interface FilmeDetalheTmdb extends FilmeResumoTmdb {
   videos?: { results: VideoTmdb[] };
   similar?: RespostaPaginada<FilmeResumoTmdb>;
   'watch/providers'?: {
-    results?: Record<string, { flatrate?: ProvedorTmdb[] }>;
+    results?: Record<string, { flatrate?: ProvedorTmdb[]; free?: ProvedorTmdb[]; ads?: ProvedorTmdb[] }>;
   };
 }

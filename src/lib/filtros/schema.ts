@@ -21,6 +21,7 @@ export interface Filtros {
   notaMinima: number | null;
   duracao: Duracao | null;
   idioma: string | null;
+  incluirGratis: boolean;
   ordem: Ordem;
   pagina: number;
 }
@@ -33,6 +34,7 @@ export const FILTROS_PADRAO: Filtros = {
   notaMinima: null,
   duracao: null,
   idioma: null,
+  incluirGratis: false,
   ordem: 'populares',
   pagina: 1,
 };
@@ -86,6 +88,7 @@ export function lerFiltros(params: ParamsBrutos): Filtros {
     notaMinima: notaSchema.parse(primeiro(params.nota) ?? null),
     duracao: duracaoSchema.parse(primeiro(params.duracao) ?? null),
     idioma: idiomaSchema.parse(primeiro(params.idioma) ?? null),
+    incluirGratis: primeiro(params.gratis) === '1',
     ordem: ordemSchema.parse(primeiro(params.ordem)),
     pagina: paginaSchema.parse(primeiro(params.pagina) ?? 1),
   };
@@ -99,6 +102,7 @@ export function paraQueryString(filtros: Filtros): string {
   if (filtros.notaMinima) params.set('nota', String(filtros.notaMinima));
   if (filtros.duracao) params.set('duracao', filtros.duracao);
   if (filtros.idioma) params.set('idioma', filtros.idioma);
+  if (filtros.incluirGratis) params.set('gratis', '1');
   if (filtros.ordem !== 'populares') params.set('ordem', filtros.ordem);
   if (filtros.pagina > 1) params.set('pagina', String(filtros.pagina));
   return params.toString();

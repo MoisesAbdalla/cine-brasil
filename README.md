@@ -3,6 +3,10 @@
 Catálogo dos filmes disponíveis nos serviços de streaming por assinatura no Brasil.
 Descoberta filtrável por serviço, gênero, ano, nota, duração e idioma.
 
+Filtre por serviço, gênero, ano, nota, duração e idioma; guarde o que quiser ver
+depois numa lista que fica no próprio navegador; e inclua, quando quiser, os
+serviços gratuitos com anúncio além dos de assinatura.
+
 ## Como rodar
 
 ```bash
@@ -39,6 +43,14 @@ Tipografia: Instrument Serif (títulos) e Inter (texto), carregadas via `next/fo
 
 Design e decisões: `docs/superpowers/specs/2026-08-13-catalogo-filmes-streaming-design.md`.
 
+## Minha lista
+
+A lista de "quero ver" é guardada no `localStorage`, sem conta e sem servidor.
+Ela guarda o resumo de cada filme (título, ano, pôster, nota), e não só o id, de
+modo que a página `/quero-ver` renderiza sem nenhuma chamada à API. Os
+componentes leem esse armazenamento por `useSyncExternalStore`, então o botão da
+página do filme e a página da lista ficam em sincronia sem estado duplicado.
+
 ## Limitações conhecidas
 
 - A grade não mostra selos de serviço por filme (custaria uma requisição extra por
@@ -50,6 +62,16 @@ Design e decisões: `docs/superpowers/specs/2026-08-13-catalogo-filmes-streaming
   fonte (JustWatch, via TMDB).
 - Cada combinação de filtros tem um teto de 500 páginas de resultados, limite da
   própria API do TMDB.
+
+- **A lista não acompanha você entre aparelhos.** Ela vive no navegador em que
+  foi criada; limpar os dados do site apaga a lista.
+- **O botão de guardar só existe na página do filme.** Colocá-lo nos cartões da
+  grade transformaria cada um dos vinte cartões num componente de cliente, o que
+  contraria a decisão de manter a tela mais visitada sem JavaScript.
+- **Alguns serviços da lista só oferecem aluguel e compra** (Google Play, Apple
+  TV, entre outros). O TMDB não informa o tipo de monetização na lista de
+  provedores, então eles aparecem entre os filtros mesmo sem nunca devolver
+  resultado numa busca por assinatura; a tela de resultado vazio explica isso.
 
 ## Créditos
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { GradeFilmes } from '@/components/grade-filmes';
+import { BotaoQueroVer } from '@/components/botao-quero-ver';
 import { SelosProvedor } from '@/components/selos-provedor';
 import { Trailer } from '@/components/trailer';
 import { obterFilme } from '@/lib/tmdb/filme';
@@ -87,16 +88,25 @@ export default async function PaginaFilme({ params }: Props) {
                 Nota <span className="font-semibold text-acento">{filme.nota.toFixed(1)}</span>
               </p>
             )}
-            {filme.trailerYoutube && (
-              <div className="mt-5">
+            <div className="mt-5 flex flex-wrap gap-3">
+              <BotaoQueroVer
+                filme={{
+                  id: filme.id,
+                  titulo: filme.titulo,
+                  ano: filme.ano,
+                  poster: filme.poster,
+                  nota: filme.nota,
+                }}
+              />
+              {filme.trailerYoutube && (
                 <Trailer youtubeId={filme.trailerYoutube} titulo={filme.titulo} />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </header>
 
-      <SelosProvedor provedores={filme.provedores} />
+      <SelosProvedor provedores={filme.provedores} provedoresGratis={filme.provedoresGratis} />
 
       {filme.sinopse && (
         <section>

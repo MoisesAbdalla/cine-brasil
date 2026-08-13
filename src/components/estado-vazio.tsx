@@ -12,6 +12,13 @@ export function EstadoVazio({ filtros }: { filtros: Filtros }) {
         {sugestao?.mensagem ?? 'Essa combinação de filtros não devolveu nada no catálogo de assinatura.'}
       </p>
 
+      {filtros.servicos.length > 0 && (
+        <p className="mx-auto mt-4 max-w-md text-xs text-suave">
+          Alguns serviços da lista — como Google Play e Apple TV — só oferecem aluguel e compra, e
+          por isso nunca aparecem numa busca por assinatura.
+        </p>
+      )}
+
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         {sugestao && (
           <Link

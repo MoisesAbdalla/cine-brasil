@@ -171,3 +171,41 @@ describe('normalizarDetalhe', () => {
     expect(d.parecidos).toEqual([]);
   });
 });
+
+describe('provedores gratuitos', () => {
+  const comGratis: FilmeDetalheTmdb = {
+    ...resumoBase,
+    backdrop_path: null,
+    overview: 'x',
+    runtime: 100,
+    genres: [],
+    'watch/providers': {
+      results: {
+        BR: {
+          flatrate: [{ provider_id: 8, provider_name: 'Netflix', logo_path: '/n.jpg', display_priority: 1 }],
+          free: [{ provider_id: 500, provider_name: 'Pluto TV', logo_path: '/p.jpg', display_priority: 2 }],
+          ads: [
+            { provider_id: 500, provider_name: 'Pluto TV', logo_path: '/p.jpg', display_priority: 2 },
+            { provider_id: 501, provider_name: 'Vix', logo_path: '/v.jpg', display_priority: 3 },
+          ],
+        },
+      },
+    },
+  };
+
+  it('separa assinatura de grátis', () => {
+    const d = normalizarDetalhe(comGratis);
+    expect(d.provedores.map((p) => p.nome)).toEqual(['Netflix']);
+    expect(d.provedoresGratis.map((p) => p.nome)).toEqual(['Pluto TV', 'Vix']);
+  });
+
+  it('não repete um provedor que aparece em free e em ads', () => {
+    const d = normalizarDetalhe(comGratis);
+    expect(d.provedoresGratis.filter((p) => p.id === 500)).toHaveLength(1);
+  });
+
+  it('devolve lista vazia de grátis quando não há nenhum', () => {
+    const semGratis = { ...comGratis, 'watch/providers': { results: { BR: { flatrate: [] } } } };
+    expect(normalizarDetalhe(semGratis).provedoresGratis).toEqual([]);
+  });
+});

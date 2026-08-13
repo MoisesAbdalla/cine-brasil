@@ -100,6 +100,14 @@ export function chipsAtivos(filtros: Filtros, catalogos: Catalogos): Chip[] {
     });
   }
 
+  if (filtros.incluirGratis) {
+    chips.push({
+      chave: 'gratis',
+      rotulo: 'Com grátis',
+      hrefRemover: comFiltros(semPagina({ ...filtros, incluirGratis: false })),
+    });
+  }
+
   if (filtros.idioma) {
     chips.push({
       chave: 'idioma',

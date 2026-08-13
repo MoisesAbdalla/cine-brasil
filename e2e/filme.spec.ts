@@ -12,7 +12,9 @@ test('abrir um filme mostra onde assistir com o crédito ao JustWatch', async ({
   // de crédito ao JustWatch, sozinhos, são renderizados incondicionalmente por
   // selos-provedor.tsx e passariam mesmo sem nenhum selo na página.
   const secaoOndeAssistir = page.locator('section[aria-labelledby="onde-assistir"]');
-  await expect(secaoOndeAssistir.getByRole('list')).toBeVisible();
+  // Podem existir dois grupos ("na assinatura" e "grátis com anúncio"), então
+  // a asserção olha a primeira lista em vez de exigir que exista uma só.
+  await expect(secaoOndeAssistir.getByRole('list').first()).toBeVisible();
   expect(await secaoOndeAssistir.getByRole('listitem').count()).toBeGreaterThan(0);
   await expect(
     secaoOndeAssistir.getByText('não está em nenhum serviço de streaming'),

@@ -77,6 +77,15 @@ export function BarraFiltros({ filtros, catalogos }: Props) {
         })}
       </div>
 
+      <div className="flex flex-wrap gap-2">
+        <Opcao
+          ativo={filtros.incluirGratis}
+          href={comFiltros({ ...filtros, incluirGratis: !filtros.incluirGratis, pagina: 1 })}
+        >
+          Incluir grátis com anúncio
+        </Opcao>
+      </div>
+
       <MaisFiltros filtros={filtros} />
 
       {chips.length > 0 && (

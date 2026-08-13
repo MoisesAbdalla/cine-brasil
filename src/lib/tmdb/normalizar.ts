@@ -1,4 +1,4 @@
-import type { FilmeDetalheTmdb, FilmeResumoTmdb } from './tipos';
+import type { FilmeDetalheTmdb, FilmeResumoTmdb, ProvedorTmdb } from './tipos';
 
 const CDN = 'https://image.tmdb.org/t/p';
 const MAXIMO_ELENCO = 8;
@@ -33,11 +33,24 @@ export interface FilmeDetalhe extends FilmeResumo {
   elenco: PessoaElenco[];
   trailerYoutube: string | null;
   provedores: Provedor[];
+  provedoresGratis: Provedor[];
   parecidos: FilmeResumo[];
 }
 
 export function urlImagem(caminho: string | null, tamanho: string): string | null {
   return caminho ? `${CDN}/${tamanho}${caminho}` : null;
+}
+
+/** Descarta provedor sem logo utilizável e remove repetidos, preservando a ordem. */
+function paraProvedores(brutos: ProvedorTmdb[]): Provedor[] {
+  const vistos = new Set<number>();
+  return brutos.flatMap((p) => {
+    if (vistos.has(p.provider_id)) return [];
+    const logo = urlImagem(p.logo_path, 'w92');
+    if (!logo) return [];
+    vistos.add(p.provider_id);
+    return [{ id: p.provider_id, nome: p.provider_name, logo }];
+  });
 }
 
 export function normalizarResumo(bruto: FilmeResumoTmdb): FilmeResumo {
@@ -57,7 +70,10 @@ export function normalizarDetalhe(bruto: FilmeDetalheTmdb): FilmeDetalhe {
   const equipe = bruto.credits?.crew ?? [];
   const elenco = bruto.credits?.cast ?? [];
   const videos = bruto.videos?.results ?? [];
-  const provedoresBr = bruto['watch/providers']?.results?.BR?.flatrate ?? [];
+  const disponibilidadeBr = bruto['watch/providers']?.results?.BR;
+  const provedoresBr = disponibilidadeBr?.flatrate ?? [];
+  // O TMDB devolve `free` e `ads` separados, e um mesmo serviço pode estar nos dois.
+  const gratisBr = [...(disponibilidadeBr?.free ?? []), ...(disponibilidadeBr?.ads ?? [])];
 
   const trailer = videos.find((v) => v.site === 'YouTube' && v.type === 'Trailer');
 
@@ -74,10 +90,8 @@ export function normalizarDetalhe(bruto: FilmeDetalheTmdb): FilmeDetalhe {
       foto: urlImagem(p.profile_path, 'w185'),
     })),
     trailerYoutube: trailer?.key ?? null,
-    provedores: provedoresBr.flatMap((p) => {
-      const logo = urlImagem(p.logo_path, 'w92');
-      return logo ? [{ id: p.provider_id, nome: p.provider_name, logo }] : [];
-    }),
+    provedores: paraProvedores(provedoresBr),
+    provedoresGratis: paraProvedores(gratisBr),
     parecidos: (bruto.similar?.results ?? []).slice(0, MAXIMO_PARECIDOS).map(normalizarResumo),
   };
 }
