@@ -1,0 +1,28 @@
+# dependências
+node_modules/
+
+# build do Next.js
+.next/
+out/
+next-env.d.ts
+
+# variáveis de ambiente (contém o token do TMDB)
+.env
+.env.local
+.env.*.local
+
+# testes
+coverage/
+playwright-report/
+test-results/
+/blob-report/
+.playwright/
+
+# companheiro visual do brainstorming
+.superpowers/
+
+# sistema operacional / editor
+.DS_Store
+Thumbs.db
+*.log
+.vercel
