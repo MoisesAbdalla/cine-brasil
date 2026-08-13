@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cine Brasil
 
-## Getting Started
+Catálogo dos filmes disponíveis nos serviços de streaming por assinatura no Brasil.
+Descoberta filtrável por serviço, gênero, ano, nota, duração e idioma.
 
-First, run the development server:
+## Como rodar
 
 ```bash
+npm install
+cp .env.example .env.local   # preencha TMDB_ACCESS_TOKEN
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O token é o *API Read Access Token* (v4) do TMDB, obtido em
+<https://www.themoviedb.org/settings/api>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comandos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm test` | Testes de unidade (Vitest) — rodam sem rede |
+| `npm run test:e2e` | Testes de ponta a ponta (Playwright) — exigem o token |
+| `npm run build` | Build de produção |
 
-## Learn More
+## Como funciona
 
-To learn more about Next.js, take a look at the following resources:
+Componentes de servidor consultam o TMDB antes de o HTML sair; o navegador não faz
+requisições de dados — o único JavaScript de cliente é o botão que carrega o trailer
+sob demanda. Todo o estado de filtro vive na URL, então cada tela tem endereço
+próprio, compartilhável e indexável.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A camada `src/lib/tmdb` isola o formato da API; nenhum componente conhece os nomes
+de campo do TMDB. A lógica pura (`src/lib/filtros`) é o que recebe testes de unidade.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tipografia: Instrument Serif (títulos) e Inter (texto), carregadas via `next/font`.
 
-## Deploy on Vercel
+Design e decisões: `docs/superpowers/specs/2026-08-13-catalogo-filmes-streaming-design.md`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Limitações conhecidas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- A grade não mostra selos de serviço por filme (custaria uma requisição extra por
+  item); os provedores aparecem só na página do filme.
+- Não existe recorte de "entrou esta semana" — o TMDB/JustWatch não expõe essa data.
+- A busca por título varre o acervo inteiro do TMDB, não só o que está em streaming
+  por assinatura no Brasil; o aviso na página de busca deixa isso explícito.
+- A disponibilidade em streaming pode estar algumas horas atrasada em relação à
+  fonte (JustWatch, via TMDB).
+- Cada combinação de filtros tem um teto de 500 páginas de resultados, limite da
+  própria API do TMDB.
+
+## Créditos
+
+Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.
+Dados de disponibilidade em streaming fornecidos por JustWatch.
