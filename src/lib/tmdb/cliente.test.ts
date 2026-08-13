@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 function respostaOk(corpo: unknown) {
-  return { ok: true, status: 200, json: async () => corpo } as Response;
+  return { ok: true, status: 200, json: async () => corpo } as unknown as Response;
 }
 
 describe('buscarNoTmdb', () => {
@@ -47,7 +47,9 @@ describe('buscarNoTmdb', () => {
   });
 
   it('lança ErroTmdb com o status quando a resposta falha', async () => {
-    fetchFalso.mockResolvedValue({ ok: false, status: 404, json: async () => ({}) } as Response);
+    fetchFalso.mockResolvedValue(
+      { ok: false, status: 404, json: async () => ({}) } as unknown as Response,
+    );
 
     await expect(buscarNoTmdb('/movie/999999999', {}, 60)).rejects.toMatchObject({
       name: 'ErroTmdb',
@@ -72,7 +74,7 @@ describe('buscarNoTmdb', () => {
       json: async () => {
         throw new SyntaxError('Unexpected end of JSON input');
       },
-    } as Response);
+    } as unknown as Response);
 
     await expect(buscarNoTmdb('/discover/movie', {}, 60)).rejects.toMatchObject({
       name: 'ErroTmdb',
