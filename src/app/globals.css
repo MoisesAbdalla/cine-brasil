@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-fundo: #111310;
+  --color-superficie: #191C17;
+  --color-borda: #2A2D26;
+  --color-texto: #E9E7DD;
+  --color-suave: #7D8074;
+  --color-acento: #CDEA4F;
+  --color-sobre-acento: #111310;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--fonte-titulo), Georgia, "Times New Roman", serif;
+  --font-sans: var(--fonte-corpo), system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-fundo);
+  color: var(--color-texto);
+}
+
+/* Micro-etiqueta do editorial: caixa alta, espaçada, discreta. */
+.etiqueta {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-suave);
 }
