@@ -11,7 +11,7 @@ export function CartaoFilme({ filme }: { filme: FilmeResumo }) {
             src={filme.poster}
             alt={`Pôster de ${filme.titulo}`}
             fill
-            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 23vw, 15vw"
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 31vw, (max-width: 1280px) 23vw, 200px"
             className="object-cover transition-opacity group-hover:opacity-80"
           />
         ) : (
