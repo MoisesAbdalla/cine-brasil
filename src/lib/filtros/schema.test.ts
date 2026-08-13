@@ -33,6 +33,11 @@ describe('lerFiltros', () => {
     expect(lerFiltros({ ano: '2015' }).anoInicio).toBeNull();
   });
 
+  it('rejeita faixa de anos que ultrapassa o limite máximo', () => {
+    expect(lerFiltros({ ano: '2015-2200' }).anoInicio).toBeNull();
+    expect(lerFiltros({ ano: '2015-2200' }).anoFim).toBeNull();
+  });
+
   it('aceita nota de 1 a 9 e rejeita o resto', () => {
     expect(lerFiltros({ nota: '7' }).notaMinima).toBe(7);
     expect(lerFiltros({ nota: 'abc' }).notaMinima).toBeNull();

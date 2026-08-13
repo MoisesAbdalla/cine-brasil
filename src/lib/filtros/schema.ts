@@ -7,7 +7,9 @@ export const DURACOES = ['ate-90', '90-120', 'acima-120'] as const;
 export type Duracao = (typeof DURACOES)[number];
 
 export const ANO_MINIMO = 1900;
-export const ANO_MAXIMO = new Date().getFullYear() + 1;
+export function anoMaximo(): number {
+  return new Date().getFullYear() + 1;
+}
 export const PAGINA_MAXIMA = 500;
 export const MAXIMO_IDS = 20;
 
@@ -62,7 +64,7 @@ function faixaDeAnos(valor: string | string[] | undefined): { inicio: number | n
   const inicio = Number(casamento[1]);
   const fim = Number(casamento[2]);
   if (inicio > fim) return vazia;
-  if (inicio < ANO_MINIMO || fim > ANO_MAXIMO) return vazia;
+  if (inicio < ANO_MINIMO || fim > anoMaximo()) return vazia;
 
   return { inicio, fim };
 }
