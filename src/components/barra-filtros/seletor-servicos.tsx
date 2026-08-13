@@ -24,7 +24,7 @@ export function SeletorServicos({ filtros, provedores }: Props) {
               <Link
                 href={comFiltros({ ...filtros, servicos, pagina: 1 })}
                 aria-label={`${ativo ? 'Remover' : 'Filtrar por'} ${provedor.nome}`}
-                aria-pressed={ativo}
+                aria-current={ativo ? 'true' : undefined}
                 className={`block overflow-hidden rounded-full border-2 transition ${
                   ativo ? 'border-acento' : 'border-transparent opacity-60 hover:opacity-100'
                 }`}

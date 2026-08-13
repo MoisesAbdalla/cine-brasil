@@ -5,14 +5,18 @@ import { ChipsAtivos } from './chips';
 import { MaisFiltros } from './mais-filtros';
 import { SeletorServicos } from './seletor-servicos';
 
-const FAIXAS_ANO: { rotulo: string; inicio: number; fim: number }[] = [
-  { rotulo: 'Últimos 5 anos', inicio: new Date().getFullYear() - 5, fim: new Date().getFullYear() },
-  { rotulo: 'Anos 2010', inicio: 2010, fim: 2019 },
-  { rotulo: 'Anos 2000', inicio: 2000, fim: 2009 },
-  { rotulo: 'Antes de 2000', inicio: 1900, fim: 1999 },
-];
-
 const NOTAS = [6, 7, 8];
+
+/** Calculada por chamada (não congelada no carregamento do módulo) para acompanhar o ano corrente. */
+function faixasAno(): { rotulo: string; inicio: number; fim: number }[] {
+  const anoAtual = new Date().getFullYear();
+  return [
+    { rotulo: 'De 2020 em diante', inicio: 2020, fim: anoAtual },
+    { rotulo: 'Anos 2010', inicio: 2010, fim: 2019 },
+    { rotulo: 'Anos 2000', inicio: 2000, fim: 2009 },
+    { rotulo: 'Antes de 2000', inicio: 1900, fim: 1999 },
+  ];
+}
 
 interface Props {
   filtros: Filtros;
@@ -27,7 +31,7 @@ export function BarraFiltros({ filtros, catalogos }: Props) {
       <SeletorServicos filtros={filtros} provedores={catalogos.provedores} />
 
       <div className="flex flex-wrap gap-2">
-        {catalogos.generos.slice(0, 10).map((genero) => {
+        {catalogos.generos.map((genero) => {
           const ativo = filtros.generos.includes(genero.id);
           const generos = ativo
             ? filtros.generos.filter((id) => id !== genero.id)
@@ -47,7 +51,7 @@ export function BarraFiltros({ filtros, catalogos }: Props) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {FAIXAS_ANO.map((faixa) => {
+        {faixasAno().map((faixa) => {
           const ativo = filtros.anoInicio === faixa.inicio && filtros.anoFim === faixa.fim;
           return (
             <Link
