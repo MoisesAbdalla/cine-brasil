@@ -64,6 +64,20 @@ describe('buscarNoTmdb', () => {
     vi.stubEnv('TMDB_ACCESS_TOKEN', '');
     await expect(buscarNoTmdb('/discover/movie', {}, 60)).rejects.toBeInstanceOf(ErroTmdb);
   });
+
+  it('lança ErroTmdb quando o corpo JSON é malformado', async () => {
+    fetchFalso.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => {
+        throw new SyntaxError('Unexpected end of JSON input');
+      },
+    } as Response);
+
+    await expect(buscarNoTmdb('/discover/movie', {}, 60)).rejects.toMatchObject({
+      name: 'ErroTmdb',
+    });
+  });
 });
 
 describe('CACHE', () => {

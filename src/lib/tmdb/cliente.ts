@@ -15,8 +15,8 @@ export const CACHE = {
 export class ErroTmdb extends Error {
   readonly status: number | undefined;
 
-  constructor(mensagem: string, status?: number) {
-    super(mensagem);
+  constructor(mensagem: string, status?: number, opcoes?: { cause?: unknown }) {
+    super(mensagem, opcoes);
     this.name = 'ErroTmdb';
     this.status = status;
   }
@@ -46,12 +46,23 @@ export async function buscarNoTmdb<T>(
       next: { revalidate: revalidarEmSegundos },
     });
   } catch (causa) {
-    throw new ErroTmdb(`Falha ao falar com o TMDB: ${String(causa)}`);
+    throw new ErroTmdb(`Falha ao falar com o TMDB: ${String(causa)}`, undefined, { cause: causa });
   }
 
   if (!resposta.ok) {
     throw new ErroTmdb(`TMDB respondeu ${resposta.status} em ${caminho}`, resposta.status);
   }
 
-  return (await resposta.json()) as T;
+  let corpo: T;
+  try {
+    corpo = (await resposta.json()) as T;
+  } catch (causa) {
+    throw new ErroTmdb(
+      `Falha ao ler resposta do TMDB em ${caminho}: ${String(causa)}`,
+      undefined,
+      { cause: causa },
+    );
+  }
+
+  return corpo;
 }
