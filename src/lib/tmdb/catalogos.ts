@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { buscarNoTmdb, CACHE } from './cliente';
 import { urlImagem, type Provedor } from './normalizar';
 import type { GeneroTmdb, ProvedorTmdb } from './tipos';
@@ -28,20 +29,20 @@ export function ordenarEcortarProvedores(brutos: ProvedorTmdb[]): Provedor[] {
     .slice(0, MAXIMO_PROVEDORES);
 }
 
-export async function obterProvedores(): Promise<Provedor[]> {
+export const obterProvedores = cache(async (): Promise<Provedor[]> => {
   const resposta = await buscarNoTmdb<{ results: ProvedorTmdb[] }>(
     '/watch/providers/movie',
     { watch_region: 'BR' },
     CACHE.provedores,
   );
   return ordenarEcortarProvedores(resposta.results ?? []);
-}
+});
 
-export async function obterGeneros(): Promise<Genero[]> {
+export const obterGeneros = cache(async (): Promise<Genero[]> => {
   const resposta = await buscarNoTmdb<{ genres: GeneroTmdb[] }>(
     '/genre/movie/list',
     {},
     CACHE.generos,
   );
   return (resposta.genres ?? []).map((g) => ({ id: g.id, nome: g.name }));
-}
+});
