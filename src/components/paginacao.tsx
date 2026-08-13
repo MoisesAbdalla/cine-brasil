@@ -35,7 +35,7 @@ export function Paginacao({ filtros, pagina, totalPaginas, base = '/', extras }:
           ← Anterior
         </Link>
       ) : (
-        <span className="etiqueta opacity-40">← Anterior</span>
+        <span className="etiqueta">← Anterior</span>
       )}
 
       <span className="etiqueta">
@@ -47,7 +47,7 @@ export function Paginacao({ filtros, pagina, totalPaginas, base = '/', extras }:
           Próxima →
         </Link>
       ) : (
-        <span className="etiqueta opacity-40">Próxima →</span>
+        <span className="etiqueta">Próxima →</span>
       )}
     </nav>
   );

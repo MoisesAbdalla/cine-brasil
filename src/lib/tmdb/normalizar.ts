@@ -46,7 +46,7 @@ export function normalizarResumo(bruto: FilmeResumoTmdb): FilmeResumo {
   return {
     id: bruto.id,
     titulo: bruto.title,
-    ano: Number.isInteger(ano) ? ano : null,
+    ano: Number.isInteger(ano) && ano > 0 ? ano : null,
     poster: urlImagem(bruto.poster_path, 'w342'),
     // Nota 0 no TMDB significa "ninguém votou", não "é péssimo".
     nota: bruto.vote_average > 0 ? Math.round(bruto.vote_average * 10) / 10 : null,

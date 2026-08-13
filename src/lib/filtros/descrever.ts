@@ -26,14 +26,19 @@ export const ROTULO_DURACAO: Record<Duracao, string> = {
   'acima-120': 'Mais de 120 min',
 };
 
-const ROTULO_IDIOMA: Record<string, string> = {
-  pt: 'Em português',
-  en: 'Em inglês',
-  es: 'Em espanhol',
-  fr: 'Em francês',
-  ja: 'Em japonês',
-  ko: 'Em coreano',
-};
+/** Exportado porque o painel "+ mais filtros" mostra os mesmos idiomas. */
+export const IDIOMAS: { codigo: string; rotulo: string }[] = [
+  { codigo: 'pt', rotulo: 'Português' },
+  { codigo: 'en', rotulo: 'Inglês' },
+  { codigo: 'es', rotulo: 'Espanhol' },
+  { codigo: 'fr', rotulo: 'Francês' },
+  { codigo: 'ja', rotulo: 'Japonês' },
+  { codigo: 'ko', rotulo: 'Coreano' },
+];
+
+const ROTULO_IDIOMA: Record<string, string> = Object.fromEntries(
+  IDIOMAS.map(({ codigo, rotulo }) => [codigo, `Em ${rotulo.toLowerCase()}`]),
+);
 
 /** Toda mudança de filtro volta para a primeira página. */
 function semPagina(filtros: Filtros): Filtros {

@@ -1,32 +1,13 @@
-import Link from 'next/link';
-import { ROTULO_DURACAO } from '@/lib/filtros/descrever';
+import { IDIOMAS, ROTULO_DURACAO } from '@/lib/filtros/descrever';
 import { comFiltros, DURACOES, type Filtros } from '@/lib/filtros/schema';
-
-const IDIOMAS: { codigo: string; rotulo: string }[] = [
-  { codigo: 'pt', rotulo: 'Português' },
-  { codigo: 'en', rotulo: 'Inglês' },
-  { codigo: 'es', rotulo: 'Espanhol' },
-  { codigo: 'fr', rotulo: 'Francês' },
-  { codigo: 'ja', rotulo: 'Japonês' },
-  { codigo: 'ko', rotulo: 'Coreano' },
-];
-
-function Opcao({ href, ativo, children }: { href: string; ativo: boolean; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className={`etiqueta rounded-sm border px-3 py-1.5 ${
-        ativo ? 'border-acento !text-acento' : 'border-borda hover:!text-texto'
-      }`}
-    >
-      {children}
-    </Link>
-  );
-}
+import { Opcao } from './opcao';
 
 export function MaisFiltros({ filtros }: { filtros: Filtros }) {
   return (
-    <details className="border-t border-borda pt-4">
+    <details
+      className="border-t border-borda pt-4"
+      open={filtros.duracao !== null || filtros.idioma !== null}
+    >
       <summary className="etiqueta cursor-pointer list-none hover:text-texto">
         + mais filtros
       </summary>

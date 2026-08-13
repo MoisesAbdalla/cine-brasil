@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import { chipsAtivos, type Catalogos } from '@/lib/filtros/descrever';
 import { comFiltros, type Filtros } from '@/lib/filtros/schema';
 import { ChipsAtivos } from './chips';
 import { MaisFiltros } from './mais-filtros';
+import { Opcao } from './opcao';
 import { SeletorServicos } from './seletor-servicos';
 
 const NOTAS = [6, 7, 8];
@@ -37,15 +37,9 @@ export function BarraFiltros({ filtros, catalogos }: Props) {
             ? filtros.generos.filter((id) => id !== genero.id)
             : [...filtros.generos, genero.id];
           return (
-            <Link
-              key={genero.id}
-              href={comFiltros({ ...filtros, generos, pagina: 1 })}
-              className={`etiqueta rounded-sm border px-3 py-1.5 ${
-                ativo ? 'border-acento !text-acento' : 'border-borda hover:!text-texto'
-              }`}
-            >
+            <Opcao key={genero.id} ativo={ativo} href={comFiltros({ ...filtros, generos, pagina: 1 })}>
               {genero.nome}
-            </Link>
+            </Opcao>
           );
         })}
       </div>
@@ -54,35 +48,31 @@ export function BarraFiltros({ filtros, catalogos }: Props) {
         {faixasAno().map((faixa) => {
           const ativo = filtros.anoInicio === faixa.inicio && filtros.anoFim === faixa.fim;
           return (
-            <Link
+            <Opcao
               key={faixa.rotulo}
+              ativo={ativo}
               href={comFiltros({
                 ...filtros,
                 anoInicio: ativo ? null : faixa.inicio,
                 anoFim: ativo ? null : faixa.fim,
                 pagina: 1,
               })}
-              className={`etiqueta rounded-sm border px-3 py-1.5 ${
-                ativo ? 'border-acento !text-acento' : 'border-borda hover:!text-texto'
-              }`}
             >
               {faixa.rotulo}
-            </Link>
+            </Opcao>
           );
         })}
 
         {NOTAS.map((nota) => {
           const ativo = filtros.notaMinima === nota;
           return (
-            <Link
+            <Opcao
               key={nota}
+              ativo={ativo}
               href={comFiltros({ ...filtros, notaMinima: ativo ? null : nota, pagina: 1 })}
-              className={`etiqueta rounded-sm border px-3 py-1.5 ${
-                ativo ? 'border-acento !text-acento' : 'border-borda hover:!text-texto'
-              }`}
             >
               Nota {nota}+
-            </Link>
+            </Opcao>
           );
         })}
       </div>

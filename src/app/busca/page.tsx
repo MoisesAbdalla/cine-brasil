@@ -58,7 +58,7 @@ export default async function PaginaBusca({ searchParams }: Props) {
         <>
           <p className="etiqueta">
             {resultado.totalResultados.toLocaleString('pt-BR')}{' '}
-            {resultado.totalResultados === 1 ? 'resultado' : 'resultados'} para "{termo}"
+            {resultado.totalResultados === 1 ? 'resultado' : 'resultados'} para “{termo}”
           </p>
           <GradeFilmes filmes={resultado.filmes} />
           <Paginacao

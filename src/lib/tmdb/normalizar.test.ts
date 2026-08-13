@@ -38,6 +38,10 @@ describe('normalizarResumo', () => {
     expect(normalizarResumo({ ...resumoBase, release_date: undefined }).ano).toBeNull();
   });
 
+  it('trata ano 0 como ano nulo', () => {
+    expect(normalizarResumo({ ...resumoBase, release_date: '0000-01-01' }).ano).toBeNull();
+  });
+
   it('trata pôster ausente como null', () => {
     expect(normalizarResumo({ ...resumoBase, poster_path: null }).poster).toBeNull();
   });
