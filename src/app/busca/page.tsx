@@ -60,6 +60,7 @@ export default async function PaginaBusca({ searchParams }: Props) {
             {resultado.totalResultados.toLocaleString('pt-BR')}{' '}
             {resultado.totalResultados === 1 ? 'resultado' : 'resultados'} para “{termo}”
           </p>
+          <h2 className="sr-only">Resultados da busca</h2>
           <GradeFilmes filmes={resultado.filmes} />
           <Paginacao
             filtros={{ ...FILTROS_PADRAO, pagina: resultado.pagina }}

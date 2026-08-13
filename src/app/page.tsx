@@ -53,6 +53,7 @@ export default async function PaginaDescoberta({ searchParams }: Props) {
         <EstadoVazio filtros={filtros} />
       ) : (
         <>
+          <h2 className="sr-only">Filmes encontrados</h2>
           <GradeFilmes filmes={resultado.filmes} />
           <Paginacao
             filtros={filtros}

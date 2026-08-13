@@ -47,7 +47,7 @@ export default async function PaginaFilme({ params }: Props) {
     <article className="space-y-10">
       <header className="relative">
         {filme.fundo && (
-          <div className="relative -mx-5 mb-6 aspect-[21/9] overflow-hidden">
+          <div className="relative -mx-5 mb-6 h-[34vh] max-h-[320px] min-h-[180px] overflow-hidden">
             <Image
               src={filme.fundo}
               alt=""
