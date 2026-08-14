@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { BarraFiltros } from '@/components/barra-filtros';
 import { EstadoVazio } from '@/components/estado-vazio';
+import { HeroiDestaque } from '@/components/heroi-destaque';
 import { GradeFilmes } from '@/components/grade-filmes';
 import { Ordenacao } from '@/components/ordenacao';
 import { Paginacao } from '@/components/paginacao';
-import { tituloDaPagina } from '@/lib/filtros/descrever';
+import { rotuloDestaque, tituloDaPagina } from '@/lib/filtros/descrever';
 import { lerFiltros, type ParamsBrutos } from '@/lib/filtros/schema';
 import { obterGeneros, obterProvedores } from '@/lib/tmdb/catalogos';
 import { descobrirFilmes } from '@/lib/tmdb/descobrir';
@@ -34,10 +35,17 @@ export default async function PaginaDescoberta({ searchParams }: Props) {
   ]);
 
   const catalogos = { provedores, generos };
+  const destaque = resultado.pagina === 1 ? resultado.filmes[0] : undefined;
 
   return (
     <div className="space-y-8">
       <h1 className="sr-only">{tituloDaPagina(filtros, catalogos)}</h1>
+
+      {/* O herói só aparece na primeira página: em qualquer outra, chamar o
+          primeiro resultado de "nº 1" seria mentira. */}
+      {destaque && (
+        <HeroiDestaque filme={destaque} rotulo={rotuloDestaque(filtros, catalogos)} />
+      )}
 
       <BarraFiltros filtros={filtros} catalogos={catalogos} />
 

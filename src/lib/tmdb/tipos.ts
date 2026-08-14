@@ -9,6 +9,9 @@ export interface FilmeResumoTmdb {
   id: number;
   title: string;
   poster_path: string | null;
+  /** A descoberta já devolve estes dois; o herói da home vive deles. */
+  backdrop_path?: string | null;
+  overview?: string;
   release_date?: string;
   vote_average: number;
 }

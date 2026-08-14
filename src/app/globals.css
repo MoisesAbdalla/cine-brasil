@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-fundo: #111310;
-  --color-superficie: #191C17;
-  --color-borda: #2A2D26;
-  --color-texto: #E9E7DD;
-  --color-suave: #7D8074;
+  /* O breu é mais fundo que um cinza escuro de propósito: a cor da página vem
+     da fotografia do filme, e a interface recua para deixá-la falar. */
+  --color-fundo: #08090A;
+  --color-superficie: #14161A;
+  --color-elevado: #1D2027;
+  --color-borda: #24272E;
+  --color-texto: #F1EEE7;
+  --color-suave: #8B8F98;
   --color-acento: #CDEA4F;
-  --color-sobre-acento: #111310;
+  --color-sobre-acento: #08090A;
 
   --font-serif: var(--fonte-titulo), Georgia, "Times New Roman", serif;
   --font-sans: var(--fonte-corpo), system-ui, sans-serif;
@@ -16,6 +19,14 @@
 body {
   background-color: var(--color-fundo);
   color: var(--color-texto);
+  /* `clip` em vez de `hidden`: contém a sangria sem quebrar o cabeçalho fixo. */
+  overflow-x: clip;
+}
+
+/* Rompe o contêiner central e ocupa a largura inteira da janela. */
+.sangria {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
 }
 
 /* Micro-etiqueta do editorial: caixa alta, espaçada, discreta. */
@@ -25,4 +36,68 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-suave);
+}
+
+/* Título em escala de cartaz. Serifa neste tamanho sobre fotografia é o que
+   distingue esta página de qualquer serviço de streaming. */
+.titulo-cartaz {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 7vw, 6.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+
+/* Título de seção: serifa média, para as seções da página do filme terem
+   hierarquia em vez de quatro micro-etiquetas iguais empilhadas. */
+.titulo-secao {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--color-texto);
+}
+
+/* Cortinas do herói: uma sobe do rodapé para entregar a base ao fundo da
+   página, outra entra pela esquerda para o texto ter onde pousar. */
+.cortina {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cortina-base {
+  background:
+    linear-gradient(
+      to top,
+      rgb(8 9 10) 2%,
+      rgb(8 9 10 / 0.92) 22%,
+      rgb(8 9 10 / 0.35) 55%,
+      rgb(8 9 10 / 0.15) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgb(8 9 10 / 0.94) 0%,
+      rgb(8 9 10 / 0.72) 28%,
+      rgb(8 9 10 / 0.2) 62%,
+      transparent 88%
+    );
+}
+
+/* Vinheta suave: fecha os cantos e evita que a foto "escape" da página. */
+.vinheta {
+  box-shadow: inset 0 -1px 0 0 rgb(8 9 10), inset 0 0 180px 60px rgb(0 0 0 / 0.5);
+}
+
+/* Vidro fosco do cabeçalho, para ele flutuar sobre a fotografia sem sumir. */
+.vidro {
+  /* Opaco o bastante para o conteúdo rolar por baixo sem deixar fantasma,
+     translúcido o bastante para a fotografia do herói ainda respirar atrás. */
+  background-color: rgb(8 9 10 / 0.86);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+/* Brilho tênue atrás do pôster em destaque. */
+.aura {
+  box-shadow: 0 30px 70px -20px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(255 255 255 / 0.06);
 }

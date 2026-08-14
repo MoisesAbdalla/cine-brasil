@@ -1,6 +1,6 @@
 import type { Genero } from '@/lib/tmdb/catalogos';
 import type { Provedor } from '@/lib/tmdb/normalizar';
-import { comFiltros, type Duracao, type Filtros } from './schema';
+import { comFiltros, type Duracao, type Filtros, type Ordem } from './schema';
 
 export interface Catalogos {
   provedores: Provedor[];
@@ -163,6 +163,34 @@ export function sugerirAfrouxamento(filtros: Filtros): Sugestao | null {
 function listar(nomes: string[]): string {
   if (nomes.length <= 1) return nomes[0] ?? '';
   return `${nomes.slice(0, -1).join(', ')} e ${nomes[nomes.length - 1]}`;
+}
+
+const PREFIXO_DESTAQUE: Record<Ordem, string> = {
+  populares: 'nº 1',
+  nota: 'melhor avaliado',
+  lancamento: 'mais recente',
+  titulo: 'em destaque',
+};
+
+/**
+ * Tarja do herói. Descreve o filme do topo sem mentir sobre o critério: se a
+ * ordenação mudou, "nº 1" deixa de ser verdade e o texto acompanha.
+ */
+export function rotuloDestaque(filtros: Filtros, catalogos: Catalogos): string {
+  const generos = filtros.generos
+    .map((id) => catalogos.generos.find((g) => g.id === id)?.nome)
+    .filter((nome): nome is string => Boolean(nome));
+
+  const servicos = filtros.servicos
+    .map((id) => catalogos.provedores.find((p) => p.id === id)?.nome)
+    .filter((nome): nome is string => Boolean(nome));
+
+  const prefixo = PREFIXO_DESTAQUE[filtros.ordem];
+  const onde = servicos.length ? ` na ${listar(servicos)}` : '';
+
+  if (generos.length) return `${prefixo} em ${listar(generos)}${onde}`;
+  if (servicos.length) return `${prefixo}${onde}`;
+  return `${prefixo} no streaming brasileiro`;
 }
 
 export function tituloDaPagina(filtros: Filtros, catalogos: Catalogos): string {

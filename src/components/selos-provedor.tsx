@@ -5,11 +5,14 @@ function Grupo({ rotulo, provedores }: { rotulo: string; provedores: Provedor[] 
   return (
     <div>
       <p className="etiqueta mb-3">{rotulo}</p>
-      <ul className="flex flex-wrap items-center gap-3">
+      <ul className="flex flex-wrap items-center gap-2.5">
         {provedores.map((provedor) => (
-          <li key={provedor.id} className="flex items-center gap-2">
+          <li
+            key={provedor.id}
+            className="flex items-center gap-2.5 rounded-full border border-borda bg-elevado/70 py-1.5 pl-1.5 pr-4"
+          >
             {/* Sem link: o TMDB não fornece endereço do provedor. */}
-            <Image src={provedor.logo} alt="" width={44} height={44} className="rounded-lg" />
+            <Image src={provedor.logo} alt="" width={36} height={36} className="rounded-full" />
             <span className="text-sm">{provedor.nome}</span>
           </li>
         ))}
@@ -28,7 +31,7 @@ export function SelosProvedor({ provedores, provedoresGratis }: Props) {
 
   return (
     <section aria-labelledby="onde-assistir">
-      <h2 id="onde-assistir" className="etiqueta mb-3">
+      <h2 id="onde-assistir" className="titulo-secao mb-5">
         onde assistir
       </h2>
 

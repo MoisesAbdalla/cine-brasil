@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { chipsAtivos, sugerirAfrouxamento, tituloDaPagina } from './descrever';
+import { chipsAtivos, rotuloDestaque, sugerirAfrouxamento, tituloDaPagina } from './descrever';
 import { FILTROS_PADRAO } from './schema';
 
 const catalogos = {
@@ -101,5 +101,25 @@ describe('tituloDaPagina', () => {
   it('lista mais de um serviço', () => {
     const titulo = tituloDaPagina({ ...FILTROS_PADRAO, servicos: [8, 337] }, catalogos);
     expect(titulo).toBe('Filmes na Netflix e Disney Plus');
+  });
+});
+
+describe('rotuloDestaque', () => {
+  it('sem filtros, fala do streaming brasileiro', () => {
+    expect(rotuloDestaque(FILTROS_PADRAO, catalogos)).toBe('nº 1 no streaming brasileiro');
+  });
+
+  it('junta gênero e serviço', () => {
+    const r = rotuloDestaque({ ...FILTROS_PADRAO, generos: [27], servicos: [8] }, catalogos);
+    expect(r).toBe('nº 1 em Terror na Netflix');
+  });
+
+  it('não diz "nº 1" quando a ordenação não é por popularidade', () => {
+    expect(rotuloDestaque({ ...FILTROS_PADRAO, ordem: 'nota', generos: [27] }, catalogos)).toBe(
+      'melhor avaliado em Terror',
+    );
+    expect(rotuloDestaque({ ...FILTROS_PADRAO, ordem: 'lancamento' }, catalogos)).toBe(
+      'mais recente no streaming brasileiro',
+    );
   });
 });

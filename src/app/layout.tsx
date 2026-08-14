@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className={`${fonteTitulo.variable} ${fonteCorpo.variable}`}>
       <body className="min-h-screen font-sans antialiased">
         <Cabecalho />
-        <main className="mx-auto w-full max-w-7xl px-5 py-8">{children}</main>
+        <main className="mx-auto w-full max-w-7xl px-5 pb-8 pt-[73px]">{children}</main>
         <Rodape />
       </body>
     </html>

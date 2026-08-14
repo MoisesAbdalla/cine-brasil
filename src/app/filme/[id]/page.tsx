@@ -46,49 +46,53 @@ export default async function PaginaFilme({ params }: Props) {
 
   return (
     <article className="space-y-10">
-      <header className="relative">
-        {filme.fundo && (
-          <div className="relative -mx-5 mb-6 h-[34vh] max-h-[320px] min-h-[180px] overflow-hidden">
-            <Image
-              src={filme.fundo}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover opacity-40"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-fundo to-transparent" />
-          </div>
+      <header className="sangria relative -mt-[73px] overflow-hidden sm:min-h-[74vh]">
+        {filme.fundo ? (
+          <Image
+            src={filme.fundo}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_25%]"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-superficie" />
         )}
 
-        <div className="flex flex-col gap-6 sm:flex-row">
+        <div className="cortina cortina-base" />
+        <div className="cortina vinheta" />
+
+        <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 pb-12 pt-32 sm:min-h-[74vh] sm:flex-row sm:items-end sm:pb-16">
           {filme.poster && (
             <Image
               src={filme.poster}
               alt={`Pôster de ${filme.titulo}`}
-              width={180}
-              height={270}
-              className="w-32 shrink-0 sm:w-44"
+              width={220}
+              height={330}
+              className="aura w-32 shrink-0 rounded-[3px] sm:w-52"
             />
           )}
 
-          <div>
-            <h1 className="font-serif text-4xl leading-tight">{filme.titulo}</h1>
-            <p className="mt-3 text-sm text-suave">
+          <div className="max-w-2xl">
+            <h1 className="titulo-cartaz">{filme.titulo}</h1>
+
+            <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-suave">
+              {filme.nota !== null && (
+                <span className="font-semibold text-acento">{filme.nota.toFixed(1)}</span>
+              )}
               {[
                 filme.ano ?? '—',
                 filme.duracao ? `${filme.duracao} min` : null,
                 filme.generos.join(', ') || null,
               ]
                 .filter(Boolean)
-                .join(' · ')}
+                .map((parte) => (
+                  <span key={String(parte)}>{parte}</span>
+                ))}
             </p>
-            {filme.nota !== null && (
-              <p className="mt-2 text-sm">
-                Nota <span className="font-semibold text-acento">{filme.nota.toFixed(1)}</span>
-              </p>
-            )}
-            <div className="mt-5 flex flex-wrap gap-3">
+
+            <div className="mt-6 flex flex-wrap gap-3">
               <BotaoQueroVer
                 filme={{
                   id: filme.id,
@@ -110,14 +114,14 @@ export default async function PaginaFilme({ params }: Props) {
 
       {filme.sinopse && (
         <section>
-          <h2 className="etiqueta mb-3">sinopse</h2>
+          <h2 className="titulo-secao mb-4">sinopse</h2>
           <p className="max-w-prose leading-relaxed">{filme.sinopse}</p>
         </section>
       )}
 
       {(filme.diretor || filme.elenco.length > 0) && (
         <section>
-          <h2 className="etiqueta mb-3">quem fez</h2>
+          <h2 className="titulo-secao mb-4">quem fez</h2>
           {filme.diretor && (
             <p className="mb-4 text-sm">
               Direção de <span className="font-serif text-base">{filme.diretor}</span>
@@ -149,7 +153,7 @@ export default async function PaginaFilme({ params }: Props) {
 
       {filme.parecidos.length > 0 && (
         <section>
-          <h2 className="etiqueta mb-4">parecidos</h2>
+          <h2 className="titulo-secao mb-5">parecidos</h2>
           <GradeFilmes filmes={filme.parecidos} />
         </section>
       )}

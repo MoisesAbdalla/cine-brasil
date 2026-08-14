@@ -10,7 +10,16 @@ export interface FilmeResumo {
   ano: number | null;
   poster: string | null;
   nota: number | null;
+  fundo: string | null;
+  sinopse: string | null;
 }
+
+/**
+ * O que o cartão da grade precisa — e nada além.
+ * Deixa a grade servir tanto ao resultado da API quanto à lista guardada no
+ * navegador, que não tem motivo para carregar fundo nem sinopse.
+ */
+export type FilmeParaCartao = Pick<FilmeResumo, 'id' | 'titulo' | 'ano' | 'poster' | 'nota'>;
 
 export interface Provedor {
   id: number;
@@ -63,6 +72,8 @@ export function normalizarResumo(bruto: FilmeResumoTmdb): FilmeResumo {
     poster: urlImagem(bruto.poster_path, 'w342'),
     // Nota 0 no TMDB significa "ninguém votou", não "é péssimo".
     nota: bruto.vote_average > 0 ? Math.round(bruto.vote_average * 10) / 10 : null,
+    fundo: urlImagem(bruto.backdrop_path ?? null, 'w1280'),
+    sinopse: bruto.overview?.trim() || null,
   };
 }
 
