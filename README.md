@@ -1,3 +1,13 @@
+# Cine Brasil — streaming movie catalog (Brazil)
+
+> Discover movies available on Brazilian subscription streaming services, filterable by service,
+> genre, year, rating, runtime and language, with a client-side "want to watch" list.
+> **Stack:** Next.js 16 (App Router, server-only data layer) · React 19 · TypeScript · Tailwind CSS 4 ·
+> Zod · TMDB API · Vitest (offline unit tests) · Playwright (E2E). Built with Claude Code.
+> 🇧🇷 Documentação em português abaixo.
+
+---
+
 # Cine Brasil
 
 Catálogo dos filmes disponíveis nos serviços de streaming por assinatura no Brasil.
